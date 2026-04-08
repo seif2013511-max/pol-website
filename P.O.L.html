@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.O.L - القناة الرسمية لبروفيسور الحياة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // YouTube API Key - استبدل بمفتاح API الخاص بك من Google Cloud Console
+        const API_KEY = 'AIzaSyDejIfWeoDCyJQO-wfybA0PWJHnnxwTYDg';
+        // Channel ID - استبدل بـ ID القناة الحقيقي (يمكن الحصول عليه من https://www.youtube.com/account_advanced)
+        const CHANNEL_ID = 'UCYYVM7U98sK9vOhgRyiXNug';
+
+        async function updateStats() {
+            try {
+                // جلب إحصائيات القناة
+                const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`);
+                const channelData = await channelResponse.json();
+
+                if (channelData.items && channelData.items.length > 0) {
+                    const stats = channelData.items[0].statistics;
+
+                    // تحديث عدد المتابعين
+                    const subscribers = parseInt(stats.subscriberCount).toLocaleString('ar-EG');
+                    document.querySelector('.subscribers h3').textContent = '+' + subscribers;
+
+                    // تحديث عدد الفيديوهات
+                    const videos = parseInt(stats.videoCount).toLocaleString('ar-EG');
+                    document.querySelector('.videos h3').textContent = '+' + videos;
+
+                    // تحديث عدد المشاهدات
+                    const views = parseInt(stats.viewCount).toLocaleString('ar-EG');
+                    document.querySelector('.views h3').textContent = '+' + views;
+                }
+
+                // جلب آخر الفيديوهات (اختياري)
+                const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&order=date&maxResults=6&key=${API_KEY}`);
+                const videosData = await videosResponse.json();
+
+                if (videosData.items) {
+                    // يمكن تحديث البطاقات هنا إذا أردت
+                    console.log('آخر الفيديوهات:', videosData.items);
+                }
+
+            } catch (error) {
+                console.error('خطأ في جلب البيانات من YouTube:', error);
+            }
+        }
+
+        // تحديث الإحصائيات عند تحميل الصفحة
+        window.addEventListener('load', updateStats);
+
+        // تحديث كل 5 دقائق
+        setInterval(updateStats, 5 * 60 * 1000);
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #1a1a1a 0%, #ff0000 100%); }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-tighter text-red-600">P.O.L<span class="text-white">بروفيسور الحياة</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex space-x-8 space-x-reverse">
+                        <a href="#" class="hover:text-red-500 transition">الرئيسية</a>
+                        <a href="#videos" class="hover:text-red-500 transition">الفيديوهات</a>
+                        <a href="#about" class="hover:text-red-500 transition">حول القناة</a>
+                    </div>
+                </div>
+                <div>
+                    <a href="https://youtube.com/@p.o.l-r8i?si=HBoGze7U_S-juuO-" target="_blank" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full font-bold transition flex items-center gap-2">
+                        <i class="fab fa-youtube"></i> اشترك الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <img src="channels4_banner.jpg" class="absolute inset-x-0 top-10 bottom-0 w-full object-contain object-center" alt="Background">
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+        </div>
+        
+        <div class="relative z-20 text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 animate-pulse">مرحباً بكم في عالم <span class="text-red-600">P.O.L</span></h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">نقدم لكم أفضل المحتويات الترفيهية والتقنية بجودة عالية. انضم إلى جيشنا اليوم!</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="https://youtube.com/@p.o.l-r8i?si=HBoGze7U_S-juuO-" class="bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-red-600 hover:text-white transition-all transform hover:scale-105">
+                    تصفح القناة
+                </a>
+                <a href="#videos" class="border-2 border-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-black transition-all">
+                    آخر الفيديوهات
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="p-6 rounded-2xl bg-zinc-800 border border-white/5 subscribers">
+                <i class="fas fa-users text-4xl text-red-600 mb-4"></i>
+                <h3 class="text-3xl font-bold">+10K</h3>
+                <p class="text-gray-400">مشترك</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-zinc-800 border border-white/5 videos">
+                <i class="fas fa-play-circle text-4xl text-red-600 mb-4"></i>
+                <h3 class="text-3xl font-bold">+500</h3>
+                <p class="text-gray-400">فيديو</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-zinc-800 border border-white/5 views">
+                <i class="fas fa-eye text-4xl text-red-600 mb-4"></i>
+                <h3 class="text-3xl font-bold">+1M</h3>
+                <p class="text-gray-400">مشاهدة</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-zinc-800 border border-white/5">
+                <i class="fas fa-clock text-4xl text-red-600 mb-4"></i>
+                <h3 class="text-3xl font-bold">24/7</h3>
+                <p class="text-gray-400">دعم مستمر</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="py-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-12 text-center">آخر <span class="text-red-600">التنزيلات</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Placeholder Cards -->
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/5yTxEQCWzO4/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Produced by P.O.L) - ظل ونور | Shadow and Light (Official Power Track)بروفيسور الحياة |P.O.L عمل اول</h3>
+                        <p class="text-gray-400 text-sm mb-4">فيديو موسيقي رسمي من قناة P.O.L - بروفيسور الحياة.</p>
+                        <a href="https://www.youtube.com/watch?v=5yTxEQCWzO4" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/sMVjx9p41a8/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">music shadow and light,,subscribe now #اكسبلور #viral #follow #new #kdrama #بروفيسور_الحياة #edit</h3>
+                        <p class="text-gray-400 text-sm mb-4">موسيقى ظل ونور - اشترك الآن للمزيد من المحتوى.</p>
+                        <a href="https://www.youtube.com/watch?v=sMVjx9p41a8" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/o4Ctfu5fGAU/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">موسيقى جديدة🔥،.. استمعوا لأول أعمالى بصوتي new music🔊🎸 #اكسبلور #تحفيز 🎧🎵🎙#viral # kdram</h3>
+                        <p class="text-gray-400 text-sm mb-4">موسيقى جديدة - استمع لأول أعمالي الصوتية.</p>
+                        <a href="https://www.youtube.com/watch?v=o4Ctfu5fGAU" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/YPZnjUqE5TI/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2026هذه ليست مجرد أغنية، بل هي بداية الرحلة التي شاركتكم تفاصيلها استمعوا لأول أعمالي بصوتي#اكسبلور</h3>
+                        <p class="text-gray-400 text-sm mb-4">أغنية جديدة - بداية رحلة شاركت تفاصيلها معكم.</p>
+                        <a href="https://www.youtube.com/watch?v=YPZnjUqE5TI" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/aqtzzqcQLik/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">(shadow and light بروفيسور الحياة #بروفيسور_الحياة # #اكسبلور # # #تحفيز # #  | أول أغنية رسمية لي 💎</h3>
+                        <p class="text-gray-400 text-sm mb-4">ظل ونور - أول أغنية رسمية لي.</p>
+                        <a href="https://www.youtube.com/watch?v=aqtzzqcQLik" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 hover:border-red-600 transition shadow-2xl">
+                    <div class="relative h-48 bg-gray-800">
+                        <img src="https://img.youtube.com/vi/ddlvek4ArDc/hqdefault.jpg" class="w-full h-full object-cover opacity-50" alt="Video Thumb">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-play-circle text-6xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">&quot;سر النجاح الذي لا يخبرك به أحد 🚀 Subscribe Now ✅ #اكسبلور&quot; ⚠️ #بروفيسور_الحياة #العظماء #اكسبلور</h3>
+                        <p class="text-gray-400 text-sm mb-4">سر النجاح الذي لا يخبرك به أحد - اشترك الآن.</p>
+                        <a href="https://www.youtube.com/watch?v=ddlvek4ArDc" target="_blank" class="text-red-500 font-bold flex items-center gap-2">
+                            شاهد الآن <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 hero-gradient">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6">لا تفوت أي جديد!</h2>
+            <p class="text-xl mb-10 text-white/90">فعل جرس التنبيهات لتكون أول من يشاهد فيديوهاتنا القادمة.</p>
+            <a href="https://youtube.com/@p.o.l-r8i?si=HBoGze7U_S-juuO-" class="bg-black text-white px-12 py-5 rounded-full font-black text-2xl hover:scale-110 transition inline-block shadow-2xl">
+                اشترك الآن مجاناً
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 space-x-reverse mb-8">
+                <a href="#" class="text-2xl hover:text-red-600"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-2xl hover:text-red-600"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-2xl hover:text-red-600"><i class="fab fa-discord"></i></a>
+                <a href="#" class="text-2xl hover:text-red-600"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <p class="text-gray-500">© 2026 POL. جميع الحقوق محفوظة للقناة الرسمية.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
